@@ -10,9 +10,8 @@ Install these before cloning:
 
 | Tool | Notes |
 | --- | --- |
-| [Node.js](https://nodejs.org/) | LTS |
-| [pnpm](https://pnpm.io/installation) | Package manager used by this repo |
-| [Rust](https://www.rust-lang.org/tools/install) | `rustup` + stable toolchain |
+| [mise](https://mise.en.dev/) | Pins Node and pnpm via `mise.toml` |
+| [rustup](https://rustup.rs/) | Official Rust installer |
 | [Xcode Command Line Tools](https://developer.apple.com/xcode/) | macOS / desktop builds |
 
 **Android** (optional): Android Studio / SDK, and a device or emulator.
@@ -24,6 +23,20 @@ arch -arm64 brew install xcodegen libimobiledevice cocoapods
 ```
 
 ## Setup after cloning
+
+1. Install **Node** and **pnpm** (versions in `mise.toml`):
+
+   ```bash
+   mise install
+   ```
+
+2. Install project packages:
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Rust** is handled for you. `rust-toolchain.toml` pins **1.97.1**; rustup installs that toolchain the first time you run `cargo` or `rustc` in this repo. You do not need an extra install step.
 
 If pnpm blocks native build scripts (for example `esbuild`), approve them and install again:
 

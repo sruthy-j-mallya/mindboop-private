@@ -12,6 +12,7 @@ This document records the work done in this setup run so it can be used as a pul
 - Installed JS dependencies with **pnpm**, including an `approve-builds` pass for `esbuild`.
 - Generated **Android** (`src-tauri/gen/android`) and **iOS** (`src-tauri/gen/apple`) project trees.
 - Installed **macOS Homebrew tools** (Apple Silicon) required for iOS init; those tools live on the machine, not in this repo.
+- Pinned **Node** and **pnpm** in `mise.toml`, and **Rust** in `rust-toolchain.toml`.
 
 App identifier: `com.sruthyjmallya.mindboop`
 Product name / crate: `mindboop`
@@ -73,6 +74,13 @@ Generated the Apple project under `src-tauri/gen/apple/`:
 - Pre-build script: `pnpm tauri ios xcode-script` to compile Rust into `libapp.a`
 
 Init needed extra Homebrew packages (see below). Those installs are **not** git commits.
+
+### 5. Pin tool versions (`mise.toml` + `rust-toolchain.toml`)
+
+Added repo files so clones get the same Node, pnpm, and Rust versions:
+
+- `mise.toml` — pins **Node 22.14.0** and **pnpm 11.11.0**. Run `mise install` after clone.
+- `rust-toolchain.toml` — pins **Rust 1.97.1**. rustup installs that toolchain on first `cargo` / `rustc` in this repo; no extra install step.
 
 ## Machine setup (not in git)
 
