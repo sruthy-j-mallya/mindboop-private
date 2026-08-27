@@ -1,8 +1,10 @@
 # Mindboop
 
-Focus sessions that respect ADHD brains — and the rabbit holes they chase.
+Mindboop is a focus-session app built for ADHD brains. It treats rabbit holes as part of how you work, not something to punish — so you can start, wander, and still come back to the thing you meant to do.
 
-This is a **Tauri 2** desktop (and mobile) app with a **React + TypeScript** frontend (Vite) and a **Rust** backend.
+## Technologies
+
+Desktop and mobile app on [Tauri 2](https://v2.tauri.app/) with a [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) frontend ([Vite](https://vite.dev/)) and a [Rust](https://www.rust-lang.org/) backend.
 
 ## Prerequisites
 
@@ -36,14 +38,15 @@ arch -arm64 brew install xcodegen libimobiledevice cocoapods
    pnpm install
    ```
 
+  If pnpm blocks native build scripts (for example `esbuild`), approve them and install again:
+
+  ```bash
+  pnpm approve-builds
+  pnpm install
+  ```
+
 3. **Rust** is handled for you. `rust-toolchain.toml` pins **1.97.1**; rustup installs that toolchain the first time you run `cargo` or `rustc` in this repo. You do not need an extra install step.
 
-If pnpm blocks native build scripts (for example `esbuild`), approve them and install again:
-
-```bash
-pnpm approve-builds
-pnpm install
-```
 
 ## Run the app
 
