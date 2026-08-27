@@ -74,6 +74,33 @@ Frontend-only (Vite, no native shell):
 pnpm dev
 ```
 
+### Docker (web UI)
+
+This runs the **Vite frontend** as a static site in nginx. It does not start the Tauri desktop or mobile shells. Tauri `invoke` calls (for example **Greet**) need the native backend, so they will not work in this container.
+
+**Prerequisites:** [Docker](https://docs.docker.com/get-docker/) and Docker Compose v2.
+
+From the repo root:
+
+```bash
+docker compose up --build
+```
+
+Then open [http://localhost:8080](http://localhost:8080).
+
+Stop with `Ctrl+C`, or in another terminal:
+
+```bash
+docker compose down
+```
+
+Equivalent without Compose:
+
+```bash
+docker build -t mindboop-web .
+docker run --rm -p 8080:80 mindboop-web
+```
+
 ### Production build
 
 ```bash

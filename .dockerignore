@@ -1,0 +1,14 @@
+.git
+.github
+.vscode
+docs
+node_modules
+dist
+dist-ssr
+src-tauri
+*.log
+*.local
+.DS_Store
+README.md
+.env
+.env.*
