@@ -42,7 +42,7 @@ docker run --rm -p 8080:80 mindboop-web
 
 ## Image layout
 
-1. **build** stage: `corepack` enables pnpm 11.11.0, `pnpm install --frozen-lockfile`, then `pnpm build` (`tsc` + `vite build`).
+1. **build** stage: `corepack` enables pnpm 11.11.0 (`COREPACK_ENABLE_AUTO_PIN=0` so Corepack does not rewrite `package.json`), `pnpm install --frozen-lockfile`, then `pnpm build` (`tsc` + `vite build`).
 2. **runtime** stage: nginx only; no Node, no Rust, no Tauri CLI. Image size stays small and the attack surface is the static files plus nginx.
 
 ## Test plan

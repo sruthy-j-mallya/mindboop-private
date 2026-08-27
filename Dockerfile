@@ -6,6 +6,7 @@ FROM node:22.14.0-alpine AS build
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@11.11.0 --activate
+ENV COREPACK_ENABLE_AUTO_PIN=0
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
