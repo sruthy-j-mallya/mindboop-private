@@ -1,6 +1,6 @@
-# Mindboop
+# MindBoop
 
-Mindboop is a focus-session app built for ADHD brains. It treats rabbit holes as part of how you work, not something to punish — so you can start, wander, and still come back to the thing you meant to do.
+MindBoop is a focus-session app built for ADHD brains. It treats rabbit holes as part of how you work, not something to punish — so you can start, wander, and still come back to the thing you meant to do.
 
 ## Technologies
 
