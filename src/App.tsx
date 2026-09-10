@@ -2,6 +2,8 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 import ThemeToggle from "@common/ThemeToggle";
+
+import AuthScreen from "@/components/auth/AuthScreen";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,6 +15,7 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { getSession, signOut, type AuthUser } from "@/lib/auth";
 
 const brandTokens = [
   { name: "Coral", className: "bg-brand-coral" },
@@ -29,11 +32,16 @@ const semanticTokens = [
 ] as const;
 
 function App() {
+  const [user, setUser] = useState<AuthUser | null>(() => getSession());
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
 
   async function greet() {
     setGreetMsg(await invoke("greet", { name }));
+  }
+
+  if (!user) {
+    return <AuthScreen onAuthenticated={setUser} />;
   }
 
   return (
@@ -43,11 +51,23 @@ function App() {
           <Badge variant="secondary">MindBoop</Badge>
           <h1>Design system</h1>
           <p className="text-muted-foreground">
-            Coral, purple, and warm neutrals from the MindBoop logo, wired into
-            shadcn semantic tokens.
+            Signed in as {user.email}. Coral, purple, and warm neutrals from the
+            MindBoop logo, wired into shadcn semantic tokens.
           </p>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => {
+              signOut();
+              setUser(null);
+            }}
+          >
+            Sign out
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
 
       <section className="flex flex-col gap-3">
