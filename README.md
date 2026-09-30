@@ -12,7 +12,7 @@ Install these before cloning:
 
 | Tool | Notes |
 | --- | --- |
-| [mise](https://mise.en.dev/) | Pins Node and pnpm via `mise.toml` |
+| [mise](https://mise.en.dev/) | Pins Node, pnpm and Rust via `mise.toml` |
 | [rustup](https://rustup.rs/) | Official Rust installer |
 | [Xcode Command Line Tools](https://developer.apple.com/xcode/) | macOS / desktop builds |
 
@@ -26,35 +26,30 @@ arch -arm64 brew install xcodegen libimobiledevice cocoapods
 
 ## Setup after cloning
 
-1. Install **Node** and **pnpm** (versions in `mise.toml`):
+Run the setup task once:
 
-   ```bash
-   mise install
-   ```
+```bash
+mise run setup
+```
 
-2. Install project packages:
+This installs the pinned **Node**, **pnpm** and **Rust** versions from `mise.toml`, installs the project's JS packages with `pnpm install`, and downloads the Rust crates for `src-tauri/`.
 
-   ```bash
-   pnpm install
-   ```
+If pnpm blocks native build scripts (for example `esbuild`), approve them and run setup again:
 
-  If pnpm blocks native build scripts (for example `esbuild`), approve them and install again:
-
-  ```bash
-  pnpm approve-builds
-  pnpm install
-  ```
-
-3. **Rust** is handled for you. `rust-toolchain.toml` pins **1.97.1**; rustup installs that toolchain the first time you run `cargo` or `rustc` in this repo. You do not need an extra install step.
-
+```bash
+mise exec -- pnpm approve-builds
+mise run setup
+```
 
 ## Run the app
 
 **Desktop** (dev server at `http://localhost:1420` plus the native window):
 
 ```bash
-pnpm tauri dev
+mise run dev
 ```
+
+The commands below use pnpm directly. If mise isn't activated in your shell, prefix them with `mise exec --` so they use the pinned pnpm.
 
 **Android** (emulator or device):
 
