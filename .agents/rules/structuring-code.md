@@ -33,6 +33,31 @@ export type { CommittedSchedule } from "./schedule";
 export { toDateString, getNearestHour, hourEndsAt } from "./datetime";
 ```
 
+## Top-level folders for queries, stores, and hooks
+
+| Folder          | Contents                                                        | File naming                            |
+| --------------- | --------------------------------------------------------------- | -------------------------------------- |
+| `src/tanstack/` | TanStack Query hooks (queries, mutations, query keys), grouped by resource, plus the shared `queryClient` | `use<Resource>Queries.ts` (e.g. `useTaskQueries.ts`) |
+| `src/stores/`   | Zustand stores, one per resource                                 | `<resource>Store.ts` (e.g. `authStore.ts`)  |
+| `src/hooks/`    | Custom React hooks that are not TanStack queries or stores      | `use<Name>.ts`                         |
+
+**Good**
+
+```ts
+// src/tanstack/useTaskQueries.ts: every query/mutation for the Task resource
+export const taskKeys = { all: ["tasks"] as const };
+export const useListTasks = () => useQuery({ queryKey: taskKeys.all, queryFn: tasks.list });
+export const useCreateTask = () => useMutation({ mutationFn: tasks.create });
+```
+
+**Bad**
+
+```ts
+// Query hooks or stores living inside a component folder
+// src/components/Tasks/hooks.ts
+export const useListTasks = () => useQuery({ ... });
+```
+
 ## Path Aliases
 
 Prefer path aliases over relative imports whenever a file is outside its own folder. Relative imports (e.g. `../`, `../../`) are only acceptable when importing from a file in the same directory.
@@ -42,7 +67,7 @@ Prefer path aliases over relative imports whenever a file is outside its own fol
 ```ts
 // importing from another folder — use the alias
 import SchedulePicker from "@common/SchedulePicker";
-import { useListTasks } from "@/tanstackQueries/useTaskQueries";
+import { useListTasks } from "@/tanstack/useTaskQueries";
 
 // importing from the same folder — relative is fine
 import { formatDuration } from "./utils";
@@ -53,7 +78,7 @@ import { formatDuration } from "./utils";
 ```ts
 // crossing folder boundaries with relative paths
 import SchedulePicker from "../../components/common/SchedulePicker";
-import { useListTasks } from "../tanstackQueries/useTaskQueries";
+import { useListTasks } from "../tanstack/useTaskQueries";
 import SchedulePicker from "@/components/common/SchedulePicker"; // use @common instead
 ```
 
