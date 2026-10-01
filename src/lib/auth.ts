@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 
 export type User = {
-  id: number;
+  id: string;
   name: string;
   email: string;
 };
