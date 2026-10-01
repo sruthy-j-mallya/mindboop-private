@@ -1,9 +1,24 @@
-import { PlusIcon, XIcon } from "lucide-react";
+import {
+  closestCenter,
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { PlusIcon } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
+import SortableStep from "./SortableStep";
 import type { Step } from "./types";
 
 type IntentionCardProps = {
@@ -12,6 +27,7 @@ type IntentionCardProps = {
   onIntentionChange: (intention: string) => void;
   onAddStep: (text: string) => void;
   onRemoveStep: (id: string) => void;
+  onReorderSteps: (activeId: string, overId: string) => void;
 };
 
 const IntentionCard = ({
@@ -20,8 +36,15 @@ const IntentionCard = ({
   onIntentionChange,
   onAddStep,
   onRemoveStep,
+  onReorderSteps,
 }: IntentionCardProps) => {
   const [draftStep, setDraftStep] = useState("");
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
   const addStep = () => {
     const text = draftStep.trim();
@@ -38,6 +61,12 @@ const IntentionCard = ({
     addStep();
   };
 
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (!over || active.id === over.id) return;
+
+    onReorderSteps(String(active.id), String(over.id));
+  };
+
   return (
     <div className="flex flex-col gap-5 rounded-3xl border bg-card p-6 md:p-8">
       <label htmlFor="intention" className="sr-only">
@@ -52,28 +81,24 @@ const IntentionCard = ({
       />
 
       {steps.length > 0 && (
-        <ol className="flex flex-col gap-2">
-          {steps.map(({ id, text }, index) => (
-            <li
-              key={id}
-              className="flex items-center gap-3 rounded-xl bg-muted px-4 py-2.5"
-            >
-              <span className="text-sm font-medium text-muted-foreground tabular-nums">
-                {index + 1}
-              </span>
-              <span className="flex-1 text-sm">{text}</span>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-xs"
-                aria-label={`Remove step ${text}`}
-                onClick={() => onRemoveStep(id)}
-              >
-                <XIcon />
-              </Button>
-            </li>
-          ))}
-        </ol>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext items={steps} strategy={verticalListSortingStrategy}>
+            <ol className="flex flex-col gap-2">
+              {steps.map((step, index) => (
+                <SortableStep
+                  key={step.id}
+                  step={step}
+                  position={index + 1}
+                  onRemove={onRemoveStep}
+                />
+              ))}
+            </ol>
+          </SortableContext>
+        </DndContext>
       )}
 
       <div className="flex gap-3">

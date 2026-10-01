@@ -1,3 +1,4 @@
+import { arrayMove } from "@dnd-kit/sortable";
 import { TimerIcon } from "lucide-react";
 import { useState, type FormEvent } from "react";
 
@@ -36,6 +37,14 @@ const QuickStart = () => {
     setSteps((current) => current.filter((step) => step.id !== id));
   };
 
+  const reorderSteps = (activeId: string, overId: string) => {
+    setSteps((current) => {
+      const fromIndex = current.findIndex((step) => step.id === activeId);
+      const toIndex = current.findIndex((step) => step.id === overId);
+      return arrayMove(current, fromIndex, toIndex);
+    });
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // TODO: start the focus session timer once it exists.
@@ -63,6 +72,7 @@ const QuickStart = () => {
             onIntentionChange={setIntention}
             onAddStep={addStep}
             onRemoveStep={removeStep}
+            onReorderSteps={reorderSteps}
           />
         </div>
 
