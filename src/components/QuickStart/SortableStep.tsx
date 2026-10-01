@@ -9,13 +9,11 @@ import type { Step } from "./types";
 
 type SortableStepProps = {
   step: Step;
-  position: number;
   onRemove: (id: string) => void;
 };
 
 const SortableStep = ({
   step: { id, text },
-  position,
   onRemove,
 }: SortableStepProps) => {
   const {

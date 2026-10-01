@@ -101,7 +101,7 @@ const IntentionCard = ({
         >
           <SortableContext items={steps} strategy={verticalListSortingStrategy}>
             <ol className="flex flex-col gap-2">
-              {steps.map((step, index) => (
+              {steps.map((step) => (
                 <SortableStep
                   key={step.id}
                   step={step}
