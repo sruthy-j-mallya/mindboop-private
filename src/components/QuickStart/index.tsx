@@ -12,6 +12,7 @@ import { getDurationMinutes } from "./utils";
 
 const QuickStart = () => {
   const [intention, setIntention] = useState("");
+  const [description, setDescription] = useState("");
   const [steps, setSteps] = useState<Step[]>([]);
   const [presetMinutes, setPresetMinutes] = useState<DurationPreset | null>(DURATION_PRESETS[0]);
   const [customMinutes, setCustomMinutes] = useState("");
@@ -68,8 +69,10 @@ const QuickStart = () => {
         <div className="flex flex-col gap-6">
           <IntentionCard
             intention={intention}
+            description={description}
             steps={steps}
             onIntentionChange={setIntention}
+            onDescriptionChange={setDescription}
             onAddStep={addStep}
             onRemoveStep={removeStep}
             onReorderSteps={reorderSteps}

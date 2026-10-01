@@ -15,6 +15,7 @@ import {
 import { PlusIcon } from "lucide-react";
 import { useState, type KeyboardEvent } from "react";
 
+import MarkdownEditor from "@common/MarkdownEditor";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -23,8 +24,10 @@ import type { Step } from "./types";
 
 type IntentionCardProps = {
   intention: string;
+  description: string;
   steps: Step[];
   onIntentionChange: (intention: string) => void;
+  onDescriptionChange: (description: string) => void;
   onAddStep: (text: string) => void;
   onRemoveStep: (id: string) => void;
   onReorderSteps: (activeId: string, overId: string) => void;
@@ -32,8 +35,10 @@ type IntentionCardProps = {
 
 const IntentionCard = ({
   intention,
+  description,
   steps,
   onIntentionChange,
+  onDescriptionChange,
   onAddStep,
   onRemoveStep,
   onReorderSteps,
@@ -80,6 +85,14 @@ const IntentionCard = ({
         className="h-auto min-h-10 rounded-none border-0 bg-transparent px-0 py-0 text-2xl font-semibold placeholder:text-muted-foreground/60 focus-visible:ring-0 md:text-3xl"
       />
 
+      <MarkdownEditor
+        value={description}
+        onChange={onDescriptionChange}
+        ariaLabel="Description"
+        placeholder="Add a description — Markdown is supported"
+        className="min-h-16"
+      />
+
       {steps.length > 0 && (
         <DndContext
           sensors={sensors}
@@ -92,7 +105,6 @@ const IntentionCard = ({
                 <SortableStep
                   key={step.id}
                   step={step}
-                  position={index + 1}
                   onRemove={onRemoveStep}
                 />
               ))}

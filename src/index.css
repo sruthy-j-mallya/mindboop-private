@@ -215,3 +215,58 @@
     line-height: 1.5;
   }
 }
+
+@layer components {
+  .markdown-editor {
+    @apply flex flex-col gap-2 text-base leading-relaxed;
+  }
+
+  .markdown-editor h1 {
+    @apply text-2xl font-semibold;
+  }
+
+  .markdown-editor h2 {
+    @apply text-xl font-semibold;
+  }
+
+  .markdown-editor h3 {
+    @apply text-lg font-semibold;
+  }
+
+  .markdown-editor ul {
+    @apply list-disc pl-6;
+  }
+
+  .markdown-editor ol {
+    @apply list-decimal pl-6;
+  }
+
+  .markdown-editor blockquote {
+    @apply border-l-2 pl-4 text-muted-foreground;
+  }
+
+  .markdown-editor code {
+    @apply rounded bg-muted px-1 py-0.5 font-mono text-sm;
+  }
+
+  .markdown-editor pre {
+    @apply rounded-xl bg-muted p-4 font-mono text-sm;
+  }
+
+  .markdown-editor pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .markdown-editor a {
+    @apply text-primary underline underline-offset-2;
+  }
+
+  .markdown-editor hr {
+    @apply my-2;
+  }
+
+  .markdown-editor p.is-editor-empty:first-child::before {
+    @apply pointer-events-none float-left h-0 text-muted-foreground/60;
+    content: attr(data-placeholder);
+  }
+}
