@@ -30,7 +30,7 @@ const EXPIRY_LEEWAY: Duration = Duration::from_secs(30);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct User {
-    pub id: u64,
+    pub id: String,
     pub name: String,
     pub email: String,
 }
