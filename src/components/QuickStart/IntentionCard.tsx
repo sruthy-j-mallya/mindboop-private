@@ -43,13 +43,12 @@ const IntentionCard = ({
       <label htmlFor="intention" className="sr-only">
         Intention
       </label>
-      <textarea
+      <Input
         id="intention"
-        rows={1}
         value={intention}
         onChange={(event) => onIntentionChange(event.currentTarget.value)}
         placeholder="e.g. Draft the intro section of the grant proposal"
-        className="field-sizing-content min-h-10 w-full resize-none bg-transparent text-2xl font-semibold outline-none placeholder:text-muted-foreground/60 md:text-3xl"
+        className="h-auto min-h-10 rounded-none border-0 bg-transparent px-0 py-0 text-2xl font-semibold placeholder:text-muted-foreground/60 focus-visible:ring-0 md:text-3xl"
       />
 
       {steps.length > 0 && (
