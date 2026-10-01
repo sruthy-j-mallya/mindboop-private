@@ -69,6 +69,18 @@ Frontend-only (Vite, no native shell):
 pnpm dev
 ```
 
+### Backend and sign-in
+
+The app signs in against the [MindBoop Rails API](../mindboop-rails). Start that server (`bin/rails server`, default `http://localhost:3000`) before running the app.
+
+Tokens are handled entirely in Rust (`src-tauri/src/auth/`). The webview never sees them. The access token stays in memory. The refresh token is kept in the OS credential store (macOS Keychain, Windows Credential Manager, Linux Secret Service). On mobile it is held in memory only, so users sign in again after the app restarts.
+
+To point a build at another API, set `MINDBOOP_API_URL` at compile time:
+
+```bash
+MINDBOOP_API_URL=https://api.example.com pnpm tauri build
+```
+
 ### Production build
 
 ```bash

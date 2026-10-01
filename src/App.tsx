@@ -2,6 +2,7 @@ import { useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 
 import ThemeToggle from "@common/ThemeToggle";
+import { LoginScreen } from "@/components/auth";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import {
@@ -13,6 +14,8 @@ import {
   CardTitle,
 } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
+import { useAuthStore } from "@/stores/authStore";
+import { useLogout } from "@/tanstack/useAuthQueries";
 
 const brandTokens = [
   { name: "Coral", className: "bg-brand-coral" },
@@ -29,11 +32,25 @@ const semanticTokens = [
 ] as const;
 
 function App() {
+  const { status, user } = useAuthStore()
+  const { mutate: logout, isPending: isLogoutPending } = useLogout();
   const [greetMsg, setGreetMsg] = useState("");
   const [name, setName] = useState("");
 
   async function greet() {
     setGreetMsg(await invoke("greet", { name }));
+  }
+
+  if (status === "loading") {
+    return (
+      <main className="flex min-h-svh items-center justify-center">
+        <p className="text-muted-foreground">Loading...</p>
+      </main>
+    );
+  }
+
+  if (status === "signed_out") {
+    return <LoginScreen />;
   }
 
   return (
@@ -47,7 +64,18 @@ function App() {
             shadcn semantic tokens.
           </p>
         </div>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">{user?.name}</span>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isLogoutPending}
+            onClick={() => logout()}
+          >
+            Log out
+          </Button>
+          <ThemeToggle />
+        </div>
       </header>
 
       <section className="flex flex-col gap-3">
